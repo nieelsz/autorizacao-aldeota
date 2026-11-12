@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Solicitação SAE</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6fb; --card: #fff; --txt: #0f172a; --muted: #64748b; --line: #e2e8f0;
+    --pri: #2563eb; --pri-2: #1d4ed8; --pri-soft: #eff6ff; --ok: #16a34a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0b1120; --card: #131c2e; --txt: #e2e8f0; --muted: #94a3b8; --line: #23304a; --pri: #3b82f6; --pri-2: #2563eb; --pri-soft: #172554; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--bg); color: var(--txt); font-size: 14px; }
+  header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; padding: 28px 16px 64px; }
+  header .in { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+  header .logo { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,.15); display: grid; place-items: center; font-size: 22px; }
+  header h1 { margin: 0; font-size: 22px; font-weight: 700; }
+  header p { margin: 2px 0 0; opacity: .8; }
+  main { max-width: 1180px; margin: -44px auto 40px; padding: 0 16px; display: grid; grid-template-columns: 1fr 480px; gap: 20px; align-items: start; }
+  @media (max-width: 960px) { main { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(15,23,42,.04); }
+  .card h2 { margin: 0 0 14px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .card h2 .n { width: 24px; height: 24px; border-radius: 50%; background: var(--pri-soft); color: var(--pri); display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 12px; }
+  input, textarea { display: block; width: 100%; margin-top: 5px; padding: 10px 12px; font: inherit; font-size: 14px; font-weight: 400; color: var(--txt); background: var(--card); border: 1px solid var(--line); border-radius: 10px; transition: border-color .15s, box-shadow .15s; }
+  input:focus, textarea:focus { outline: none; border-color: var(--pri); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pri) 20%, transparent); }
+  textarea { min-height: 90px; resize: vertical; }
+  .g { display: grid; gap: 0 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .g2 { display: grid; gap: 0 14px; grid-template-columns: 2fr 1fr; }
+  @media (max-width: 560px) { .g2 { grid-template-columns: 1fr; } }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .chips label { margin: 0; }
+  .chips input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .chips span { display: inline-block; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--txt); cursor: pointer; user-select: none; transition: all .15s; }
+  .chips span:hover { border-color: var(--pri); }
+  .chips input:checked + span { background: var(--pri); border-color: var(--pri); color: #fff; }
+  .chips input:focus-visible + span { box-shadow: 0 0 0 3px color-mix(in srgb, var(--pri) 30%, transparent); }
+  .pessoa { display: grid; grid-template-columns: 26px 2fr 1fr; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .pessoa input { margin: 0; }
+  .pessoa span { color: var(--muted); font-size: 12px; text-align: right; }
+  .hint { font-size: 12px; color: var(--muted); background: var(--pri-soft); border-radius: 10px; padding: 10px 12px; line-height: 1.5; }
+  button { font: inherit; font-weight: 600; border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; transition: background .15s, transform .05s; }
+  button:active { transform: translateY(1px); }
+  .prim { background: var(--pri); color: #fff; width: 100%; padding: 14px; font-size: 15px; }
+  .prim:hover { background: var(--pri-2); }
+  .sec { background: var(--pri-soft); color: var(--pri); }
+  .ghost { background: transparent; color: var(--muted); }
+  .ghost:hover { color: var(--txt); }
+  aside { position: sticky; top: 16px; }
+  aside #email { min-height: 520px; font-size: 13px; line-height: 1.5; }
+  .tabs { display: flex; gap: 4px; background: var(--bg); padding: 4px; border-radius: 10px; margin-bottom: 12px; }
+  .tabs button { flex: 1; background: transparent; color: var(--muted); padding: 8px; }
+  .tabs button.on { background: var(--card); color: var(--txt); box-shadow: 0 1px 3px rgba(15,23,42,.12); }
+  #previa { width: 100%; aspect-ratio: 595 / 842; max-height: calc(100vh - 210px); border: 1px solid var(--line); border-radius: 8px; background: #fff; display: block; }
+  .row { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .ass { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  #assPrev { max-height: 48px; background: #fff; border-radius: 8px; padding: 4px; border: 1px solid var(--line); }
+  .file { display: inline-block; }
+  .file input { display: none; }
+  .file b { display: inline-block; background: var(--pri-soft); color: var(--pri); padding: 9px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header><div class="in">
+  <div class="logo">📝</div>
+  <div><h1>Solicitação de Autorização</h1><p>SAE · gere o PDF e a mensagem do e-mail</p></div>
+</div></header>
+
+<main>
+<div>
+  <section class="card"><h2><span class="n">1</span>Loja</h2>
+    <div class="g2">
+      <label>Nome da loja/sala <input id="loja"></label>
+      <label>LUC/SUC Nº <input id="luc"></label>
+    </div>
+  </section>
+
+  <section class="card"><h2><span class="n">2</span>Atividade</h2>
+    <div class="chips" id="tipos"></div>
+    <label id="outrosBox" hidden>Qual atividade? <input id="outros" placeholder="Ex.: Entrega de cadeiras"></label>
+    <label>Descrição detalhada <textarea id="descricao" maxlength="420" placeholder="O que será feito, onde, materiais..."></textarea></label>
+  </section>
+
+  <section class="card"><h2><span class="n">3</span>Período</h2>
+    <div class="g2" style="grid-template-columns:1fr 1fr">
+      <label>Início · data <input type="date" id="dataIni"></label>
+      <label>Início · hora <input type="time" id="horaIni"></label>
+      <label>Término · data <input type="date" id="dataFim"></label>
+      <label>Término · hora <input type="time" id="horaFim"></label>
+    </div>
+    <div class="hint">Barulho, cheiro e poeira: só das 22:30 às 05h · Elevador: das 20h às 07h · Validade máx. 10 dias (funcionários: 5 dias) · Entregar na administração até 16h, seg. a sex.</div>
+  </section>
+
+  <section class="card"><h2><span class="n">4</span>Empresa</h2>
+    <div class="g2">
+      <label>Empresa autorizada <input id="empresa"></label>
+      <label>Telefone <input id="empresaTel"></label>
+      <label>Responsável presente <input id="responsavel"></label>
+      <label>RG <input id="responsavelRg"></label>
+    </div>
+  </section>
+
+  <section class="card"><h2><span class="n">5</span>Pessoas autorizadas</h2>
+    <div id="pessoas"></div>
+    <button type="button" class="sec" id="maisPessoa">+ Adicionar pessoa</button>
+  </section>
+
+  <section class="card"><h2><span class="n">6</span>Solicitante <small style="font-weight:400;color:var(--muted)">· fica salvo neste navegador</small></h2>
+    <div class="g2">
+      <label>Nome <input id="solicitante"></label>
+      <label>Fones para contato <input id="fone"></label>
+    </div>
+    <div class="ass">
+      <label class="file"><input type="file" id="assFile" accept="image/png,image/jpeg"><b>Enviar assinatura (PNG/JPG)</b></label>
+      <img id="assPrev" alt="Assinatura salva">
+      <button type="button" class="ghost" id="assLimpar">Remover</button>
+    </div>
+  </section>
+</div>
+
+<aside>
+  <section class="card">
+    <div class="tabs"><button type="button" class="on" data-aba="abaPdf">📄 Prévia do PDF</button><button type="button" data-aba="abaEmail">✉️ Mensagem do e-mail</button></div>
+    <div id="abaPdf"><iframe id="previa" title="Prévia do PDF"></iframe></div>
+    <div id="abaEmail" hidden>
+    <textarea id="email"></textarea>
+    <div class="row">
+      <small style="color:var(--muted)">Edite por último, antes de copiar.</small>
+      <button type="button" class="sec" id="copiar">Copiar</button>
+    </div>
+    </div>
+  </section>
+  <button class="prim" id="baixar">⬇ Baixar PDF</button>
+  <div class="row" style="justify-content:center"><button class="ghost" id="limpar">Limpar solicitação</button></div>
+</aside>
+</main>
+
+<script src="pdf-lib.min.js"></script>
+<script src="modelo.js"></script>
+<script src="preencher.js"></script>
+<script>
+const TIPOS = ['ELÉTRICA','HIDRÁULICA','CONSTRUÇÃO CIVIL','MARCENARIA','PINTURA','TELEFONIA / INTERNET',
+  'AR CONDICIONADO','ADESIVAGEM','BALANÇO / INVENTÁRIO','OUTROS'];
+const PADRAO = { loja: 'SALA 618 - SUPORTEMAIS', luc: '618', solicitante: 'DANIEL ROBERTO', fone: '', assinatura: '' };
+const $ = id => document.getElementById(id);
+
+let fixo = PADRAO;
+try { fixo = { ...PADRAO, ...JSON.parse(localStorage.getItem('sae-fixo') || '{}') }; } catch {}
+const salvarFixo = () => {
+  try { localStorage.setItem('sae-fixo', JSON.stringify(fixo)); } catch { alert('Não foi possível salvar os dados fixos.'); }
+};
+
+$('tipos').innerHTML = TIPOS.map(t => `<label><input type="checkbox" value="${t}"><span>${t}</span></label>`).join('');
+$('tipos').addEventListener('change', () => { $('outrosBox').hidden = !$('tipos').querySelector('[value="OUTROS"]').checked; });
+$('pessoas').innerHTML = Array.from({ length: 10 }, (_, i) =>
+  `<div class="pessoa"${i > 1 ? ' hidden' : ''}><span>${i + 1}.</span><input placeholder="Nome completo" class="pn"><input placeholder="RG / CPF / CNH" class="pd"></div>`).join('');
+const mostrarPessoas = n => {
+  document.querySelectorAll('.pessoa').forEach((p, i) => p.hidden = i >= n);
+  $('maisPessoa').hidden = n >= 10;
+};
+$('maisPessoa').onclick = () => {
+  const n = document.querySelectorAll('.pessoa:not([hidden])').length + 1;
+  mostrarPessoas(n);
+  document.querySelectorAll('.pessoa')[n - 1].querySelector('input').focus();
+};
+
+['loja', 'luc', 'solicitante', 'fone'].forEach(k => {
+  $(k).value = fixo[k];
+  $(k).addEventListener('input', () => { fixo[k] = $(k).value; salvarFixo(); });
+});
+const mostrarAss = () => { $('assPrev').src = fixo.assinatura || ''; $('assPrev').hidden = $('assLimpar').hidden = !fixo.assinatura; };
+mostrarAss();
+$('assFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { fixo.assinatura = r.result; salvarFixo(); mostrarAss(); atualizarPrevia(); };
+  r.readAsDataURL(f);
+});
+$('assLimpar').onclick = () => { fixo.assinatura = ''; salvarFixo(); mostrarAss(); $('assFile').value = ''; atualizarPrevia(); };
+
+const br = v => v ? v.split('-').reverse().join('/') : '';
+const dados = () => ({
+  loja: $('loja').value, luc: $('luc').value,
+  tipos: [...$('tipos').querySelectorAll(':checked')].map(c => c.value), outros: $('outros').value,
+  descricao: $('descricao').value,
+  dataIni: br($('dataIni').value), horaIni: $('horaIni').value,
+  dataFim: br($('dataFim').value), horaFim: $('horaFim').value,
+  empresa: $('empresa').value, empresaTel: $('empresaTel').value,
+  responsavel: $('responsavel').value, responsavelRg: $('responsavelRg').value,
+  pessoas: [...document.querySelectorAll('.pessoa')]
+    .map(p => ({ nome: p.querySelector('.pn').value.trim(), doc: p.querySelector('.pd').value.trim() }))
+    .filter(p => p.nome || p.doc),
+  solicitante: $('solicitante').value, fone: $('fone').value, assinatura: fixo.assinatura,
+});
+
+const MODELO = Uint8Array.from(atob(window.MODELO_PDF), c => c.charCodeAt(0));
+const pdfUrl = async d => URL.createObjectURL(new Blob([await gerarPdf(PDFLib, MODELO, d)], { type: 'application/pdf' }));
+
+// prévia: regera o PDF 400ms depois da última digitação
+let timer, urlPrevia;
+const atualizarPrevia = () => {
+  clearTimeout(timer);
+  timer = setTimeout(async () => {
+    try {
+      const novo = await pdfUrl(dados());
+      $('previa').src = novo + '#toolbar=0&navpanes=0&view=FitH';
+      if (urlPrevia) setTimeout(URL.revokeObjectURL, 2000, urlPrevia);
+      urlPrevia = novo;
+    } catch (e) { console.error(e); }
+  }, 400);
+};
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tabs button').forEach(x => {
+    x.classList.toggle('on', x === b); $(x.dataset.aba).hidden = x !== b;
+  });
+});
+
+$('baixar').onclick = async () => {
+  const d = dados();
+  if (!d.tipos.length) return alert('Marque pelo menos um tipo de atividade.');
+  if (!d.dataIni || !d.dataFim) return alert('Preencha as datas de início e término.');
+  if ($('dataFim').value < $('dataIni').value) return alert('Término antes do início.');
+  try {
+    const a = document.createElement('a');
+    a.href = await pdfUrl(d);
+    a.download = `SAE ${$('dataIni').value} ${d.empresa || ''}`.trim().replace(/[\\/:*?"<>|]/g, '') + '.pdf';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  } catch (e) { alert('Erro ao gerar o PDF: ' + e.message); }
+};
+
+const mensagem = () => {
+  const d = dados();
+  const tipos = d.tipos.map(t => t === 'OUTROS' ? (d.outros || 'outros') : t).join(', ').toLowerCase();
+  const quando = (dt, h) => dt ? dt + (h ? ' às ' + h : '') : '___';
+  const pessoas = d.pessoas.length ? '\n\nPessoas autorizadas:\n' + d.pessoas.map(p => `- ${p.nome}${p.doc ? ' (' + p.doc + ')' : ''}`).join('\n') : '';
+  return `Prezados,
+
+Solicito a autorização para o serviço de ${tipos || '___'} na ${d.loja}${d.empresa ? ', a ser realizado pela empresa ' + d.empresa : ''}, com início em ${quando(d.dataIni, d.horaIni)} e término em ${quando(d.dataFim, d.horaFim)}.${d.descricao ? '\n\nDescrição: ' + d.descricao.trim() : ''}${d.responsavel ? '\nResponsável presente: ' + d.responsavel + (d.responsavelRg ? ' (RG ' + d.responsavelRg + ')' : '') : ''}${pessoas}
+
+Segue em anexo o formulário de solicitação preenchido.
+
+Atenciosamente,
+${d.solicitante}${d.fone ? '\n' + d.fone : ''}`;
+};
+const atualizarMsg = e => {
+  if (e?.target?.id === 'email') return;
+  $('email').value = mensagem();
+  atualizarPrevia();
+};
+document.querySelector('main').addEventListener('input', atualizarMsg);
+document.querySelector('main').addEventListener('change', atualizarMsg);
+atualizarMsg();
+$('copiar').onclick = async () => {
+  try { await navigator.clipboard.writeText($('email').value); }
+  catch { $('email').select(); document.execCommand('copy'); }
+  $('copiar').textContent = 'Copiado ✓';
+  setTimeout(() => $('copiar').textContent = 'Copiar', 1500);
+};
+
+$('limpar').onclick = () => {
+  if (!confirm('Limpar os campos da solicitação? (loja e solicitante continuam)')) return;
+  document.querySelectorAll('main input:not(#loja):not(#luc):not(#solicitante):not(#fone):not([type=file]), main textarea')
+    .forEach(i => i.type === 'checkbox' ? (i.checked = false) : (i.value = ''));
+  $('outrosBox').hidden = true;
+  mostrarPessoas(2);
+  atualizarMsg();
+};
+</script>
+</body>
+</html>
